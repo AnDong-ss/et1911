@@ -1,5 +1,6 @@
 package com.etoak.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,7 @@ public class UserConfig {
 	@Bean
 	public UserAction userAction(@Qualifier("userService")UserService userService) {
 		UserAction userAction = new UserAction();
-		//配合@Qualifier
+		//配合@Qualifier 相当于省略Autowired
 		userAction.setUserService(userService);
 		return userAction;
 	}
