@@ -18,7 +18,7 @@ public class UserConfig {
 	@Bean
 	public UserAction userAction(@Qualifier("userService")UserService userService) {
 		UserAction userAction = new UserAction();
-		//配合@Qualifier使用
+		//配合@Qualifier
 		userAction.setUserService(userService);
 		return userAction;
 	}
