@@ -25,5 +25,4 @@ public class HelloController implements HttpRequestHandler {
 		request.getRequestDispatcher("/hello.jsp").forward(request, response);
 
 	}
-
 }

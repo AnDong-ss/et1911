@@ -6,4 +6,12 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>spring-ioc-review</artifactId>
+  <dependencies>
+  	<!-- spring-context -->
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-context</artifactId>
+  		<!-- 版本号已经在父工程定义 -->
+  	</dependency>
+  </dependencies>
 </project>
