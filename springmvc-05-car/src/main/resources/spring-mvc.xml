@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+	
+	<!-- 1.注解扫描 -->
+	<context:component-scan base-package="com.etoak">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+	</context:component-scan>
+	
+	<!-- 2.开启mvc配置 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+	
+	<!-- 3.静态文件交由Servlet容器处理 -->
+	<mvc:default-servlet-handler/>
+	
+	<!-- 整合Thymeleaf -->
+	<bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+		<property name="prefix" value="/templates/"></property>
+		<property name="suffix" value=".html"></property>
+		<property name="characterEncoding" value="UTF-8"></property>
+		<property name="templateMode" value="HTML"></property>
+		<!-- 在开发环境下设置成false,方便调试页面 -->
+		<property name="cacheable" value="false"></property>
+	</bean>
+	
+	<bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver"></property>
+	</bean>
+	
+	<bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine"></property>
+		<property name="characterEncoding" value="UTF-8"></property>
+	</bean>
+	
+	
+	
+	
+	
+	
+	
+	
+</beans>
+
+
+
