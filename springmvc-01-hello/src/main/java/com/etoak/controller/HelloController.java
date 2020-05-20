@@ -23,6 +23,5 @@ public class HelloController implements HttpRequestHandler {
 		request.setAttribute("result", "Hello"+name);
 		//返回页面 (weapp/hello.jsp)
 		request.getRequestDispatcher("/hello.jsp").forward(request, response);
-
 	}
 }

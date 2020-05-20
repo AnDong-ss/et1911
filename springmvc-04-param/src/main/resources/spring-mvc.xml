@@ -14,17 +14,17 @@
 	<context:component-scan base-package="com.etoak">
 	
 	<!-- 表示只扫描@Controller注解 -->
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springgframework.stereotype.Controller"/>
+		
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
 	</context:component-scan>
-	
+		
 	<!-- 将静态资源（css,js）等交给servlet容器内置的名字叫default的servlet处理 -->
 	<mvc:default-servlet-handler/>
 	
 	<!-- 定义静态资源位置和访问路径 -->
 	<mvc:resources location="file:d:/aaa/" mapping="/pic/**"></mvc:resources>
 	<mvc:resources location="classpath:/static/" mapping="/s/**"></mvc:resources>
-	
-	
 	
 	<!-- 开启spring mvc配置 -->
 	<mvc:annotation-driven></mvc:annotation-driven>
