@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+	
+	<!-- 1.注解扫描 -->
+	<context:component-scan base-package="com.etoak">
+	
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+		
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+		
+	</context:component-scan>
+	<!-- SqlSessionFactory需要配置什么 -->
+	<!-- 1.数据源 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/et1911"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="etoak"></property>
+	</bean>
+	<!-- 2.bean的别名 -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- bean的别名 -->
+		<property name="typeAliasesPackage" value="com.etoak.bean"></property>
+		<!-- mapper配置文件的位置 -->
+		<property name="mapperLocations" value="classpath:mappers/*.xml"></property>
+		<property name="plugins">
+			<list>
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<props>
+							<prop key="reasonable">true</prop>
+						</props>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<!-- Mapper接口扫描器:为Mapper接口创建代理类,并将代理注入spring容器 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.etoak.mapper"></property>
+	</bean>
+	
+	
+	
+	
+	
+	
+</beans>
+
+
+

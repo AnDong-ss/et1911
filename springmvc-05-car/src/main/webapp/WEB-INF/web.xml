@@ -3,6 +3,17 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:spring-root.xml</param-value>
+	</context-param>
+	
+
 	<!-- post请求编码过滤器 -->
 	<filter>
 		<filter-name>encoding</filter-name>
