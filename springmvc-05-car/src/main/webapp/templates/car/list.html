@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>车辆列表</title>
+<style type="text/css">
+.carPage {
+	/* width:100%;
+	margin:0 auto; */
+	text-align: center;
+}
+</style>
+<link th:href="@{/static/bootstrap/css/bootstrap.min.css}"
+	rel="stylesheet">
+</head>
+</head>
+<body>
+	<h2 style="text-align: center;">车辆列表</h2>
+
+	<!--查询条件-->
+	<div class="panel-group" id="accordion" role="tablist"
+		aria-multiselectable="true">
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingOne">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-parent="#accordion"
+						href="#collapseOne" aria-expanded="true"
+						aria-controls="collapseOne"> 条件检索 </a>
+				</h4>
+			</div>
+			<div id="collapseOne" class="panel-collapse collapse in"
+				role="tabpanel" aria-labelledby="headingOne">
+				<div class="panel-body" style="background-color: #FFFFFF">
+					<form class="form-inline" role="form" id="listForm">
+						<input type="hidden" name="brandValue" /> <input type="hidden"
+							name="seriesValue" />
+						<!-- 品牌 -->
+						<div class="form-group">
+							<label for="name"
+								style="background-color: #FAFAFA; margin-left: 65px; font-size: 25px; font-weight: 600; color: #800040;">品牌&ensp;</label>
+							<span id="brand"
+								style="background-color: #FFFFFF; font-size: 25px; font-weight: 400; color: #800040;"></span>
+						</div>
+						<br>
+						<!-- 车系 -->
+						<div class="form-group">
+							<label for="contact"
+								style="background-color: #FAFAFA; margin-left: 65px; font-size: 25px; font-weight: 600; color: #800040;">车系&ensp;</label>
+							<span id="series"
+								style="background-color: #FFFFFF; font-size: 25px; font-weight: 400; color: #800040;"></span>
+						</div>
+						<br>
+						<!-- 价格 -->
+						 <div class="form-group">
+                             <label for="contact"
+								style="background-color: #FAFAFA; margin-left: 65px; font-size: 25px; font-weight: 600; color: #800040;">价格&ensp;</label>
+							<span id="price"
+								style="background-color: #FFFFFF; font-size: 25px; font-weight: 400; color: #800040;"></span>
+                       	</div>
+                       <br />
+                        <!-- 车龄 -->
+                        <div class="form-group">
+                            <label for="contact"
+								style="background-color: #FAFAFA; margin-left: 65px; font-size: 25px; font-weight: 600; color: #800040;">车龄&ensp;</label>
+							<span id="vehicle_age"
+								style="background-color: #FFFFFF; font-size: 25px; font-weight: 400; color: #800040;"></span>
+                        </div>
+						<br>
+						<!-- 级别-->
+						<div class="form-group">
+							<label for="contact"
+								style="background-color: #FAFAFA; margin-left: 65px; font-size: 25px; font-weight: 600; color: #800040;">级别&ensp;</label>
+							<select class="form-control" name="level" id="level">
+							</select>
+						</div>
+						<!-- 变速箱-->
+						<div class="form-group">
+							<label for="contact"
+								style="background-color: #FAFAFA; margin-left: 65px; font-size: 25px; font-weight: 600; color: #800040;">变速箱&ensp;</label>
+							<select class="form-control" name="level" id="gearbox">
+								
+							</select>
+						</div>
+						<br>
+						<!-- 排量-->
+						<div class="form-group">
+							<label for="contact"
+								style="background-color: #FAFAFA; margin-left: 65px; font-size: 25px; font-weight: 600; color: #800040;">排量&ensp;</label>
+							<select class="form-control" name="outputVolume"
+								id="output_volume">
+							</select>
+						</div>
+						<!-- 8.归属地 -->
+						<div class="form-group">
+							<label for="locatison"
+								style="background-color: #FAFAFA; margin-left: 65px; font-size: 25px; font-weight: 600; color: #800040;">归属地&ensp;</label>
+							<div class="col-sm-6 input-group">
+								<input type="text" autocomplete="off" name="location"
+									class="form-control" id="location" placeholder="归属地">
+							</div>
+						</div>
+						
+					</form>
+					<button type="button" class="btn btn-primary col-lg-offset-2" onclick="initParams()">清空筛选</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 车辆列表展示 -->
+	<div class="contain-fluid">
+		<div class="col-md-12 row" id="carlist"></div>
+	</div>
+	<div class="carPage">
+		<button id="firstPage" class="btn btn-primary" type="button">首页</button>
+		<button id="prePage" class="btn btn-success" type="button">上一页</button>
+		<button id="nextPage" class="btn btn-info" type="button">下一页</button>
+		<button id="lastPage" class="btn btn-danger" type="button">末页</button>
+	</div>
+	<script th:src="@{/static/js/jquery/jquery.min.js}"></script>
+	<script th:src="@{/static/bootstrap/js/bootstrap.min.js}"
+		type="text/javascript"></script>
+	<script th:inline="javascript" type="text/javascript">
+		const path = /*[[${#request.getContextPath()}]]*/	
+		let currentPage
+		let pageCount
+		$(function(){
+			et1911.queryBrand()
+			et1911.queryList()
+			et1911.querySeries('')
+			et1911.querySelectDict('level')
+			et1911.querySelectDict('output_volume')
+			et1911.querySelectDict('gearbox')
+			et1911.getPriceDict()
+			et1911.getVehicleAgeDict()
+			$('#firstPage').click(function(){
+				et1911.queryList()
+			})
+			$('#prePage').click(function(){
+				et1911.queryList(--currentPage)
+			})
+			$('#nextPage').click(function(){
+				et1911.queryList(++currentPage)
+			})
+			$('#lastPage').click(function(){
+				et1911.queryList(pageCount)
+			})
+			$("#level").change(function(){
+				et1911.queryList()
+			})
+			$("#gearbox").change(function(){
+				et1911.queryList()
+			})
+			$("#output_volume").change(function(){
+				et1911.queryList()
+			})
+			$("#location").on('blur',function(){
+				et1911.queryList()
+			})
+			$("input[name='price']").click(function(){
+				et1911.queryList()
+			})
+			$("#vehicle_age").change(function(){
+				et1911.queryList()
+			})
+		})
+		
+		let picSeries = '' 
+		let brandValue = ''
+		let seriesValue = ''
+		function initParams(){
+			brandValue = ''
+			seriesValue = ''
+			$('#level').val('')
+			$('#gearbox').val('')
+			$('#output_volume').val('')
+			$('#location').val('')
+			
+			$("input[name='price']:checked").attr('checked',false)
+			$('input[name="vehicleAge"]:checked').attr('checked',false)
+			et1911.queryList()
+		}
+		let et1911 = {
+				getPriceDict:function(){
+					$.ajax({
+						url:path+'/dict/price',
+						type:'get',
+						data:'',
+						async:false,
+						dataType:'json',
+						success:function(data){
+							let checkbox = ''
+							for(let dict of data){
+								checkbox += `<label class="checkbox-inline">`
+											+ "<input type='checkbox' name='price' value='"+dict.value+"' />"
+											+ dict.name
+											+ "</label>"
+							}
+							$('#price').html(checkbox)
+						}
+					})
+				},
+				getVehicleAgeDict:function(){
+					$.ajax({
+						url:path+'/dict/vehicle_age',
+						type:'get',
+						data:'',
+						async:false,
+						dataType:'json',
+						success:function(msg){
+							let radio = ''
+								for(let dict of msg){//
+									radio+="<label class='radio-inline'>"
+									+"<input type='radio' name='vehicleAge' value='"+dict.value+"' />"
+									+dict.name
+									+"</label>"
+								}
+								$('#vehicle_age').html(radio);
+						}
+					})
+				},
+				//查询变速箱
+				queryBrand:function(){
+					$.ajax({
+						url:path+'/car/getBrand',
+						data:'',
+						dataType:'json',
+						type:'get',
+						success:function(data){
+							let brand_option = ''
+							$.each(data,function(index,brand){
+								brand_option += `<button type="button" class="btn btn-primary" value="${brand}" name="brand_option" onclick="et1911.querySeries('${brand}')">`
+												+brand
+												+"</button>&nbsp;&nbsp;&nbsp;"
+							})
+							$('#brand').html(brand_option)
+						
+						}
+					})
+				},
+				querySeries:function(brand){
+					$("input[name=brandValue]").val(brand)
+					brandValue=brand
+					seriesValue=''
+					this.queryList()
+					$.ajax({
+						url:path+'/car/getSeries',
+						data:'brand='+brand,
+						type:'get',
+						dataType:'json',
+						success:function(data){
+							let brand_option = ''
+							$.each(data,function(index,series){
+								brand_option += `<button type="button" class="btn btn-primary" value="${series}" name="brand_option" onclick="et1911.queryTiaojian('${series}')">`
+												+series
+												+"</button>&nbsp;&nbsp;&nbsp;"
+							})
+							$('#series').html(brand_option)
+						}
+					})
+				},	
+				queryTiaojian:function(series){
+					seriesValue=series
+					et1911.queryList()
+				},
+				querySelectDict:function(groupId){
+					//查询级别和排量
+					if(groupId){
+						$.ajax({
+							url:path+'/dict/' + groupId,
+							data:'',
+							type:'get',
+							dataType:'json',
+							success:function(data){
+								let options = "<option value=''>==请选择==</option>"
+								for(let dict of data){
+									options += "<option name='"+dict.name+"' value='" + dict.value + "'>"
+												+ dict.name
+												+ "</option>"
+								}
+								$('#' + groupId).html(options)
+							}
+						})		
+					}
+				},
+				queryList:function(pageNumber,pageSize){
+					pageNumber = pageNumber || 1
+					pageSize = pageSize || 3
+					
+					let levelValue = $('#level').val() || ''
+					let gearboxValue = $('#gearbox').val() || ''
+					let outputVolumeValue = $('#output_volume').val() || ''
+					let locationValue = $('#location').val()|| ''
+					//价格区间多选框
+					let priceList = []
+					$("input[name='price']:checked").each(function(){
+						priceList.push(this.value)
+					})
+					let vehicleAge = $('input[name="vehicleAge"]:checked').val() || ''
+					
+					$.ajax({
+						url:path+'/car/list',
+						data:'pageNumber='+pageNumber+'&pageSize='+pageSize+'&brand='+brandValue
+						+'&series='+seriesValue
+						+'&level='+levelValue
+						+'&gearbox='+gearboxValue
+						+'&outputVolume='+outputVolumeValue
+						+'&location='+locationValue
+						+'&priceList='+priceList
+						+'&vehicleAge='+vehicleAge
+						,
+						type:'get',
+						dataType:'json',
+						success:function(data){
+							//当前页	
+							currentPage = data.pageNumber
+							//总页数
+							pageCount = data.pageCount
+							//console.log(data)
+							let divs = ''
+							$.each(data.rows,function(index,car){
+								divs += "<div class='col-md-4'>"
+										+ "<img style='width: 600px;height: 300px' class='img-thumbnail' src='"+path+car.pic+"'>"
+										+ "<p>"+car.brand+"/"+car.series+"</p>"
+										+ "<p>"+car.price+"万元</p>"
+										+ "<p>"+car.gearboxName+"</p>"
+										+ "<p>"+car.location+"</p>"
+										+ "</div>"
+							})
+						 	$('#carlist').html(divs)
+							//如果是第一页,把首页和上一页按钮值为不可用
+							if(data.first){
+								$('#firstPage').attr('disabled','disabled')
+								$('#prePage').attr('disabled','disabled')
+							}else{
+								$('#firstPage').removeAttr('disabled')
+								$('#prePage').removeAttr('disabled')
+							}
+							
+							
+							//如果是最后一页,把末页和下一页按钮值为不可用
+							if(data.last){
+								$('#lastPage').attr('disabled','disabled')
+								$('#nextPage').attr('disabled','disabled')
+							}else{
+								$('#lastPage').removeAttr('disabled')
+								$('#nextPage').removeAttr('disabled')
+							}
+						} 
+					})
+				}
+		}
+	</script>
+</body>
+</html>
