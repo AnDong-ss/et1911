@@ -5,4 +5,8 @@
 	<select id="getById" parameterType="int" resultType="User">
 	 	select id,name,password,age from t_springmvc_user where id=#{value}
 	</select>
+	<select id="getByNameAndPassword" resultType="user">
+		select id,name,password,age from t_springmvc_user where name=#{name}
+			and password=#{password} 
+	</select>
 </mapper>

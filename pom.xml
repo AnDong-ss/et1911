@@ -118,6 +118,12 @@
 				<artifactId>hibernate-validator</artifactId>
 				<version>6.1.2.Final</version>
 			</dependency>
+			<!-- 用于加解密的工具包 -->
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.13</version>
+			</dependency>
 
 
 		</dependencies>
