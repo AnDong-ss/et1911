@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+	<!-- 简单邮件消息SimpleMailMessage -->
+	<bean id="simpleMailMessage" class="org.springframework.mail.SimpleMailMessage">
+		<!-- 发件人 -->
+		<property name="from" value="luxilejn@163.com" />
+	</bean>
+
+	<!-- 邮件发送对象：JavaMailSenderImpl -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<!-- 主机、用户名、授权码、默认编码、属性配置 -->
+		<property name="host" value="smtp.163.com" />
+		<property name="username" value="luxilejn@163.com" />
+		<!-- 不是登录密码，而是授权码 -->
+		<property name="password" value="et1812" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.timeout">10000</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 线程池ThreadPoolTaskExecutor：用于异步下发邮件 -->
+	<bean id="threadPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<!-- 核心线程数：最小线程数 -->
+		<property name="corePoolSize" value="10" />
+		<!-- 空闲时间 -->
+		<property name="keepAliveSeconds" value="60000" />
+		<!-- 最大线程数 -->
+		<property name="maxPoolSize" value="60" />
+		<!-- 线程池使用的缓存队容量 -->
+		<property name="queueCapacity" value="200" />
+	</bean>
+
+</beans>

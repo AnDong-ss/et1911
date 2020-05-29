@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	
+	<context:component-scan base-package="com.etoak"></context:component-scan>
+	
+	<import resource="classpath:spring-email.xml"/>
+	
+	<bean id="mqFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<constructor-arg name="userName" value=""></constructor-arg>
+		<constructor-arg name="password" value=""></constructor-arg>
+		<constructor-arg name="brokerURL" value="tcp://localhost:61616"></constructor-arg>
+		<property name="useAsyncSend" value="true"></property>
+	</bean>
+	
+	<bean id="connectionFactory" class=" org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg name="targetConnectionFactory" ref="mqFactory"></constructor-arg>
+		<property name="sessionCacheSize" value="20"></property>
+	</bean>
+	
+	<bean id="emailQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg name="name" value="email"></constructor-arg>
+	</bean>
+	
+	<bean id="emailListener" class="com.etoak.listener.EmailQueueListener"></bean>
+	
+	<bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory"></property>
+		<property name="destination" ref="emailQueue"></property>
+		<property name="messageListener" ref="emailListener"></property>
+		<property name="sessionAcknowledgeMode"  value="2"></property>
+
+	</bean>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</beans>

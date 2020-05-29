@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.etoak.et1911</groupId>
+    <artifactId>et1911</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>et1911-activemq</artifactId>
+  <packaging>pom</packaging>
+  <dependencyManagement>
+	  <dependencies>
+	  	<dependency>
+	  		<!-- activemq-all:activemq相关的所有jar包 -->
+	  		<groupId>org.apache.activemq</groupId>
+	  		<artifactId>activemq-all</artifactId>
+	  		<version>5.15.3</version>
+	  	</dependency>
+	  	<!-- 整合spring的相关依赖 -->
+	  	<!-- javax.jms-api -->
+	  	<dependency>
+	  		<groupId>javax.jms</groupId>
+	  		<artifactId>javax.jms-api</artifactId>
+	  		<version>2.0.1</version>
+	  	</dependency>
+	  	<!-- spring-jms -->
+	  	<dependency>
+	  		<groupId>org.springframework</groupId>
+	  		<artifactId>spring-jms</artifactId>
+	  		<version>5.2.2.RELEASE</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.apache.activemq</groupId>
+	  		<artifactId>activemq-broker</artifactId>
+	  		<version>5.15.3</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.apache.activemq</groupId>
+	  		<artifactId>activemq-pool</artifactId>
+	  		<version>5.15.3</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>com.alibaba</groupId>
+	  		<artifactId>fastjson</artifactId>
+	  		<version>1.2.46</version>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.springframework</groupId>
+	  		<artifactId>spring-context-support</artifactId>
+	  		<version>5.2.2.RELEASE</version>
+	  	</dependency>
+	  	<!-- curator -->
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+			<version>2.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-recipes</artifactId>
+			<version>2.4.2</version>
+		</dependency>
+	  	
+	  	
+	  	
+	  </dependencies>
+  </dependencyManagement>
+  
+  <modules>
+  	<module>activemq-java</module>
+    <module>activemq-springmvc</module>
+    <module>activemq-consumer</module>
+  </modules>
+</project>
